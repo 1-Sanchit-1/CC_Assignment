@@ -39,6 +39,50 @@ async def startup_event():
 async def shutdown_event():
     client.close()
 
+@app.get("/")
+def root():
+    return {
+        "message": "Welcome to the Student Management API!",
+        "usage": {
+            "Create a Student": {
+                "method": "POST",
+                "endpoint": "/students",
+                "body": {
+                    "name": "string",
+                    "age": "integer",
+                    "address": {"city": "string", "country": "string"}
+                }
+            },
+            "List Students": {
+                "method": "GET",
+                "endpoint": "/students",
+                "query_params": {
+                    "country": "string (optional)",
+                    "age": "integer (optional)"
+                }
+            },
+            "Fetch Student by ID": {
+                "method": "GET",
+                "endpoint": "/students/{id}",
+                "description": "Replace {id} with the student's ID."
+            },
+            "Update Student by ID": {
+                "method": "PATCH",
+                "endpoint": "/students/{id}",
+                "body": {
+                    "name": "string (optional)",
+                    "age": "integer (optional)",
+                    "address": {"city": "string (optional)", "country": "string (optional)"}
+                }
+            },
+            "Delete Student by ID": {
+                "method": "DELETE",
+                "endpoint": "/students/{id}",
+                "description": "Replace {id} with the student's ID."
+            }
+        }
+    }
+
 @app.post("/students", response_model=dict)
 async def create_student(student: Student):
     result = await students_collection.insert_one(student.dict())
