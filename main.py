@@ -113,7 +113,7 @@ async def fetch_student(id: str):
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid ID format")
 
-@app.patch("/students/{id}", response_model=dict,status_code=204)
+@app.patch("/students/{id}", response_model=dict,status_code=200)
 async def update_student(id: str, student: Student):
     try:
         result = await students_collection.update_one({"_id": ObjectId(id)}, {"$set": student.dict()})
