@@ -83,12 +83,12 @@ def root():
         }
     }
 
-@app.post("/students", response_model=dict)
+@app.post("/students", response_model=dict,status_code=201)
 async def create_student(student: Student):
     result = await students_collection.insert_one(student.dict())
     return {"id": str(result.inserted_id), "message": "Student created successfully"}
 
-@app.get("/students", response_model=List[dict])
+@app.get("/students", response_model=List[dict],status_code=200)
 async def list_students(
     country: Optional[str] = Query(None, description="To apply filter of country. If not given or empty, this filter should be applied."),
     age: Optional[int] = Query(None, description="Only records which have age greater than equal to the provided age should be present in the result. If not given or empty, this filter should be applied"),
@@ -103,7 +103,7 @@ async def list_students(
     students = await students_collection.find(filters).to_list(100)
     return [parse_json(student) for student in students]
 
-@app.get("/students/{id}", response_model=dict)
+@app.get("/students/{id}", response_model=dict,status_code=200)
 async def fetch_student(id: str):
     try:
         student = await students_collection.find_one({"_id": ObjectId(id)})
@@ -113,7 +113,7 @@ async def fetch_student(id: str):
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid ID format")
 
-@app.patch("/students/{id}", response_model=dict)
+@app.patch("/students/{id}", response_model=dict,status_code=204)
 async def update_student(id: str, student: Student):
     try:
         result = await students_collection.update_one({"_id": ObjectId(id)}, {"$set": student.dict()})
@@ -123,7 +123,7 @@ async def update_student(id: str, student: Student):
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid ID format")
 
-@app.delete("/students/{id}", response_model=dict)
+@app.delete("/students/{id}", response_model=dict,status_code=200)
 async def delete_student(id: str):
     try:
         result = await students_collection.delete_one({"_id": ObjectId(id)})
