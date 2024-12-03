@@ -24,8 +24,7 @@
 ### Step 1: Clone the repository
 
 ```bash
-git clone https://github.com/your-username/student-management-api.git
-cd student-management-api
+git clone https://github.com/1-Sanchit-1/CC_Assignment
 ```
 
 ### Step 2: Set up a virtual environment
