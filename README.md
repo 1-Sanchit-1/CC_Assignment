@@ -232,5 +232,3 @@ http://localhost:8000/redoc
 ```
 
 --- 
-
-Feel free to extend or modify this file based on future updates!
